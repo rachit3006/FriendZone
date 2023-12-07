@@ -49,7 +49,7 @@ const Login = () => {
               type="text"
               placeholder="Username"
               name="username"
-              onChange={handleChange}
+              c
             />
             <input
               type="password"
