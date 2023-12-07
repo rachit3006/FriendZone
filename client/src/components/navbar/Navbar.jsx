@@ -12,7 +12,7 @@ import { useContext } from 'react';
 import { DarkModeContext } from '../../context/darkModeContext';
 import { AuthContext } from '../../context/authContext';
 
-export const Navbar = () => {
+const Navbar = () => {
 
   const { toggle, darkMode } = useContext(DarkModeContext);
   const { currentUser } = useContext(AuthContext);
@@ -46,3 +46,5 @@ export const Navbar = () => {
     </div>
   )
 }
+
+export default Navbar;

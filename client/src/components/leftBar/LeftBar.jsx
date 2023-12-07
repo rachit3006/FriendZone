@@ -4,13 +4,18 @@ import Groups from '@mui/icons-material/GroupsOutlined';
 import Watch from '@mui/icons-material/MovieOutlined';
 import Memories from '@mui/icons-material/WatchLaterOutlined';
 import Messages from '@mui/icons-material/ForumOutlined';
+import Profile from '@mui/icons-material/AccountCircleOutlined';
 
-export const LeftBar = () => {
+const LeftBar = () => {
 
   return (
     <div className="leftBar">
       <div className="container">
         <div className="menu">
+          <div className="item">
+            <Profile />
+            <span>Profile</span>
+          </div>
           <div className="item">
             <Messages />
             <span>Messages</span>
@@ -36,3 +41,5 @@ export const LeftBar = () => {
     </div>
   );
 };
+
+export default LeftBar;

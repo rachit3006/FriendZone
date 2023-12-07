@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 import "./login.scss";
 
-export const Login = () => {
+const Login = () => {
   const [inputs, setInputs] = useState({
     username: "",
     password: "",
@@ -65,3 +65,5 @@ export const Login = () => {
     </div>
   );
 };
+
+export default Login;

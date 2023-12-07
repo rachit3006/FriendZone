@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./register.scss";
 import axios from "axios";
 
-export const Register = () => {
+const Register = () => {
   const [inputs, setInputs] = useState({
     username: "",
     email: "",
@@ -82,3 +82,5 @@ export const Register = () => {
     </div>
   );
 };
+
+export default Register;
