@@ -21,7 +21,7 @@ const Login = () => {
     e.preventDefault();
     try {
       await login(inputs);
-      navigate("/")
+      navigate("/");
     } catch (err) {
       setErr(err.response.data);
     }
@@ -31,11 +31,9 @@ const Login = () => {
     <div className="login">
       <div className="card">
         <div className="left">
-          <h1>Hello World.</h1>
+          <h1>{"Friend\nZone"}</h1>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero cum,
-            alias totam numquam ipsa exercitationem dignissimos, error nam,
-            consequatur.
+            Welcome to FriendZone. Login to your account to meet your friends !
           </p>
           <span>Don't you have an account?</span>
           <Link to="/register">
@@ -49,10 +47,10 @@ const Login = () => {
               type="text"
               placeholder="Username"
               name="username"
-              c
+              onChange={handleChange}
             />
             <input
-              type="password"
+              type="current-password"
               placeholder="Password"
               name="password"
               onChange={handleChange}

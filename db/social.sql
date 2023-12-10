@@ -14,7 +14,7 @@ CREATE TABLE `users` (
   `website` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) 
+); 
 
 CREATE TABLE `posts` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -26,7 +26,7 @@ CREATE TABLE `posts` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `userId_idx` (`userid`),
   CONSTRAINT `userId` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-)
+);
 
 CREATE TABLE `comments` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -40,7 +40,7 @@ CREATE TABLE `comments` (
   KEY `postId_idx` (`postId`),
   CONSTRAINT `CommentUserId` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `postId` FOREIGN KEY (`postId`) REFERENCES `posts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) 
+);
 
 CREATE TABLE `relationships` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -52,7 +52,7 @@ CREATE TABLE `relationships` (
   KEY `followedUser_idx` (`followedUserId`),
   CONSTRAINT `followedUser` FOREIGN KEY (`followedUserId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `followerUser` FOREIGN KEY (`followerUserId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) 
+);
 
 CREATE TABLE `likes` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -64,7 +64,7 @@ CREATE TABLE `likes` (
   KEY `likePostId_idx` (`postId`),
   CONSTRAINT `likePostId` FOREIGN KEY (`postId`) REFERENCES `posts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `likeUserId` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) 
+); 
 
 ALTER USER 'root' IDENTIFIED WITH mysql_native_password BY 'password'; 
 flush privileges;

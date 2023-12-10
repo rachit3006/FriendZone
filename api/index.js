@@ -17,13 +17,16 @@ app.use((req, res, next) => {
 });
 app.use(express.json());
 app.use(
-  cors()
+  cors({
+    credentials: true,
+    origin: "http://localhost:3000"
+  })
 );
 app.use(cookieParser());
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "../client/public/upload");
+    cb(null, "./public/upload");
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + file.originalname);
