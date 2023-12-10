@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "proxy": "http://server:8000",
   "scripts": {
     "dev": "vite --port 3000",
     "build": "vite build",
@@ -16,6 +17,7 @@
     "@mui/material": "^5.14.17",
     "@tanstack/react-query": "^5.12.2",
     "axios": "^1.6.2",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-moment": "^1.1.3",

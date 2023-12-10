@@ -17,9 +17,7 @@ app.use((req, res, next) => {
 });
 app.use(express.json());
 app.use(
-  cors({
-    origin: "http://localhost:3000",
-  })
+  cors()
 );
 app.use(cookieParser());
 
@@ -46,6 +44,6 @@ app.use("/api/comments", commentRoutes);
 app.use("/api/likes", likeRoutes);
 app.use("/api/relationships", relationshipRoutes);
 
-app.listen(8800, () => {
-  console.log("API working!");
+app.listen(process.env.REACT_APP_SERVER_PORT, () => {
+  console.log("API working");
 });
