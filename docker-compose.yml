@@ -9,7 +9,8 @@ x-common-variables: &common-variables
 
 services:
   mysql:
-    image: mysql:5.7
+    build: ./db
+    image: "rachit3006/friendzone_mysql:latest"
     environment:
       <<: *common-variables
       MYSQL_HOST: localhost
@@ -22,6 +23,7 @@ services:
       - ./db/social.sql:/docker-entrypoint-initdb.d/social.sql
   server:
     build: ./api
+    image: "rachit3006/friendzone_server:latest"
     depends_on:
       - mysql
     expose:
@@ -38,6 +40,7 @@ services:
     command: npm start
   client:
     build: ./client
+    image: "rachit3006/friendzone_client:latest"
     environment:
       <<: *common-variables
       NODE_PATH: src
