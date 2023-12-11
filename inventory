@@ -1,2 +1,2 @@
 [myhost]
-localuser ansible_host=192.168.80.1 ansible_user=localuser  ansible_become_password=ritika123
+localuser ansible_host=192.168.80.1 ansible_user=localuser  ansible_ssh_password=ritika123
