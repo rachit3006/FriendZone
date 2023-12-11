@@ -1,26 +1,16 @@
 ---
 - name: Pull Docker Image
-  # hosts: localhost
   hosts: all
-  # connection: local
   vars:
     ansible_python_interpreter: /usr/bin/python3
   tasks:
-    # - name: Pull image
-    #   docker_image:
-    #     name: neogenkai/moviesapp:latest
-    #     source: pull
-    #    - name: Start docker service
-    #      service:
-    #        name: docker
-    #        state: started
     - name: Copy Docker Compose file from host machine to remote host
       copy:
         src: ./docker-compose.yml
         dest: ./
     - name: Pull the Docker images specifed in docker-compose
       shell: 
-        cmd: docker-compose pull
+        cmd: sudo docker-compose pull
         chdir: ./
     - name: Running container
-      shell: docker-compose -f ~/docker-compose.yml up -d
+      shell: sudo docker-compose -f ~/docker-compose.yml up -d
