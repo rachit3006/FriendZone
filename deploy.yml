@@ -4,13 +4,16 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
   tasks:
-    - name: Copy Docker Compose file from host machine to remote host
+    - name: Copy from host machine to remote host
       copy:
-        src: ./docker-compose.yml
-        dest: ./
+        src: ./
+        dest: ./app
     - name: Pull the Docker images specifed in docker-compose
       shell: 
-        cmd: sudo docker-compose pull
-        chdir: ./
+        cmd: docker-compose pull
+        chdir: ./app
     - name: Running container
-      shell: sudo docker-compose -f ~/docker-compose.yml up -d
+      shell: 
+        cmd: docker-compose -f ./docker-compose.yml up -d
+        chdir: ./app
+
