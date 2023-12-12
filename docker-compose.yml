@@ -54,14 +54,3 @@ services:
     links:
       - server
     command: npm run dev
-  nginx:
-    image: "rachit3006/friendzone_nginx" 
-    depends_on:
-      - server
-      - client
-    restart: always
-    build:
-      dockerfile: Dockerfile
-      context: ./nginx
-    ports:
-      - "3050:80"
