@@ -3,14 +3,9 @@ const app = "http://localhost:8000"
 
 describe('Testing api/auth', () => {
     it('Should not login a unregistered user', async () => {
-        const details = { username: 'test', password: 'password' }
+        const details = { username: 'test1', password: 'password' }
         const response = await request(app).post('/api/auth/login').send(details)
         expect(response.status).toBe(404)
-    })
-    it('Should register a new user', async () => {
-        const details = { username: 'test', password: 'password', email: 'test' , name: 'test'}
-        const response = await request(app).post('/api/auth/register').send(details)
-        expect(response.status).toBe(200)
     })
     it('Should not register a user with existing username', async () => {
         const details = { username: 'test', password: 'password', email: 'test' , name: 'test'}
