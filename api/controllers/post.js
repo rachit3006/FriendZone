@@ -1,16 +1,23 @@
 import { db } from "../connect.js";
 import jwt from "jsonwebtoken";
 import moment from "moment";
+import nodeFileLogger from "node-file-logger";
+
+const log = nodeFileLogger
 
 export const getPosts = (req, res) => {
   const userId = req.query.userId;
   const token = req.cookies.accessToken;
-  if (!token) return res.status(401).json("Not logged in!");
+  if (!token) {
+    log.Error("User not authenticated")
+    return res.status(401).json("Not logged in!");
+  }
 
   jwt.verify(token, "secretkey", (err, userInfo) => {
-    if (err) return res.status(403).json("Token is not valid!");
-
-    console.log(userId);
+    if (err) {
+      log.Error("Invalid token")
+      return res.status(403).json("Token is not valid!");
+    }
 
     const q =
       userId !== "undefined"
@@ -23,7 +30,11 @@ export const getPosts = (req, res) => {
       userId !== "undefined" ? [userId] : [userInfo.id, userInfo.id];
 
     db.query(q, values, (err, data) => {
-      if (err) return res.status(500).json(err);
+      if (err) {
+        log.Error('Error connecting to database')
+        return res.status(500).json(err);
+      }
+      log.Info("Posts fetched")
       return res.status(200).json(data);
     });
   });
@@ -31,10 +42,16 @@ export const getPosts = (req, res) => {
 
 export const addPost = (req, res) => {
   const token = req.cookies.accessToken;
-  if (!token) return res.status(401).json("Not logged in!");
+  if (!token) {
+    log.Error("User not authenticated")
+    return res.status(401).json("Not logged in!");
+  }
 
   jwt.verify(token, "secretkey", (err, userInfo) => {
-    if (err) return res.status(403).json("Token is not valid!");
+    if (err) {
+      log.Error("Invalid token")
+      return res.status(403).json("Token is not valid!");
+    }
 
     const q =
       "INSERT INTO posts(`desc`, `img`, `createdAt`, `userId`) VALUES (?)";
@@ -46,24 +63,41 @@ export const addPost = (req, res) => {
     ];
 
     db.query(q, [values], (err, data) => {
-      if (err) return res.status(500).json(err);
+      if (err) {
+        log.Error('Error connecting to database')
+        return res.status(500).json(err);
+      }
+      log.Info("New post created")
       return res.status(200).json("Post has been created.");
     });
   });
 };
 export const deletePost = (req, res) => {
   const token = req.cookies.accessToken;
-  if (!token) return res.status(401).json("Not logged in!");
+  if (!token) {
+    log.Error("User not authenticated")
+    return res.status(401).json("Not logged in!");
+  }
 
   jwt.verify(token, "secretkey", (err, userInfo) => {
-    if (err) return res.status(403).json("Token is not valid!");
+    if (err) {
+      log.Error("Invalid token")
+      return res.status(403).json("Token is not valid!");
+    }
 
     const q =
       "DELETE FROM posts WHERE `id`=? AND `userId` = ?";
 
     db.query(q, [req.params.id, userInfo.id], (err, data) => {
-      if (err) return res.status(500).json(err);
-      if(data.affectedRows>0) return res.status(200).json("Post has been deleted.");
+      if (err) {
+        log.Error('Error connecting to database')
+        return res.status(500).json(err);
+      }
+      if(data.affectedRows>0){
+        log.Info("Post deleted")
+        return res.status(200).json("Post has been deleted.");
+      }
+      log.Warn("Can not delete other user's post")
       return res.status(403).json("You can delete only your post")
     });
   });

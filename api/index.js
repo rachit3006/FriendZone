@@ -9,6 +9,9 @@ import relationshipRoutes from "./routes/relationships.js";
 import cors from "cors";
 import multer from "multer";
 import cookieParser from "cookie-parser";
+import nodeFileLogger from "node-file-logger";
+
+const log = nodeFileLogger;
 
 //middlewares
 app.use((req, res, next) => {
@@ -47,5 +50,5 @@ app.use("/api/likes", likeRoutes);
 app.use("/api/relationships", relationshipRoutes);
 
 app.listen(process.env.REACT_APP_SERVER_PORT, () => {
-  console.log("API working");
+  log.Info(`Server Running at ${process.env.REACT_APP_SERVER_PORT}`);
 });
