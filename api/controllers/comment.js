@@ -12,7 +12,7 @@ export const getComments = (req, res) => {
 
   db.query(q, [req.query.postId], (err, data) => {
     if (err) {
-      log.Error('Error connecting to database')
+      log.Error('Error connecting to database');
       return res.status(500).json(err);
     }
     log.Info("Comments fetched")
