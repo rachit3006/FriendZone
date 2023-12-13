@@ -36,11 +36,11 @@ const Register = () => {
     <div className="register">
       <div className="card">
         <div className="left">
-          <h1>Lama Social.</h1>
+          <h1>Friend Zone</h1>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero cum,
-            alias totam numquam ipsa exercitationem dignissimos, error nam,
-            consequatur.
+          In a world where connections matter more than ever, 
+          FriendZone offers a platform for users to connect with friends,
+           share moments, and stay updated on each other's lives. Create your account to get FriendZoned !
           </p>
           <span>Do you have an account?</span>
           <Link to="/login">

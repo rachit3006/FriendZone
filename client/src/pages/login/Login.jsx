@@ -33,7 +33,7 @@ const Login = () => {
         <div className="left">
           <h1>{"Friend\nZone"}</h1>
           <p>
-            Welcome to FriendZone. Login to your account to meet your friends !
+            Welcome to FriendZone. Login to your account so that you dont miss any updates !
           </p>
           <span>Don't you have an account?</span>
           <Link to="/register">
