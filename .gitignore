@@ -2,4 +2,4 @@ client/node_modules/
 api/node_modules/
 db/storage
 api/public/upload/*
-api/logs/*
+api/logs
