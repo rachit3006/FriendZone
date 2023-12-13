@@ -16,7 +16,7 @@ services:
       MYSQL_HOST: localhost
       MYSQL_ROOT_PASSWORD: root
     ports:
-      - 3306:3306
+      - 3307:3306
     restart: unless-stopped
     volumes:
       - ./db/storage:/var/lib/mysql

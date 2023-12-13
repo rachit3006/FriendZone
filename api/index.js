@@ -49,6 +49,6 @@ app.use("/api/comments", commentRoutes);
 app.use("/api/likes", likeRoutes);
 app.use("/api/relationships", relationshipRoutes);
 
-app.listen(process.env.REACT_APP_SERVER_PORT, () => {
-  log.Info(`Server Running at ${process.env.REACT_APP_SERVER_PORT}`);
+app.listen(process.env.REACT_APP_SERVER_PORT || 8000, () => {
+  log.Info(`Server Running at ${process.env.REACT_APP_SERVER_PORT || 8000}`);
 });
