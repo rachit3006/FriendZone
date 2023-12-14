@@ -1,9 +1,25 @@
 import { db } from "../connect.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import nodeFileLogger from "node-file-logger";
+import winston from "winston"
 
-const log = nodeFileLogger
+const log = winston.createLogger({
+  // Log only if level is less than (meaning more severe) or equal to this
+  level: "info",
+  // Use timestamp and printf to create a standard log format
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.printf(
+      (info) => `${info.timestamp} ${info.level}: ${info.message}`
+    )
+  ),
+  // Log to the console and a file
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: "logs/app.log" }),
+  ],
+});
+
 
 export const register = (req, res) => {
   //CHECK USER IF EXISTS
@@ -12,11 +28,11 @@ export const register = (req, res) => {
 
   db.query(q, [req.body.username], (err, data) => {
     if (err) {
-      log.Error('Error connecting to database')
+      log.error(new Error("Error connecting to database"));
       return res.status(500).json(err);
     }
     if (data.length) {
-      log.Warn("User already exists");
+      log.warn("User already exists");
       return res.status(409).json("User already exists!");
     }
     //CREATE A NEW USER
@@ -36,10 +52,10 @@ export const register = (req, res) => {
 
     db.query(q, [values], (err, data) => {
       if (err) {
-        log.Error('Error connecting to database')
+        log.error(new Error("Error connecting to database"));
         return res.status(500).json(err);
       }
-      log.Info("New user registered");
+      log.info("New user registered");
       return res.status(200).json("User has been created.");
     });
   });
@@ -50,11 +66,11 @@ export const login = (req, res) => {
   
   db.query(q, [req.body.username], (err, data) => {
     if (err) {
-      log.Error('Error connecting to database')
+      log.error(new Error("Error connecting to database"));
       return res.status(500).json(err);
     }
     if (data.length === 0){
-      log.Warn("User does not exist")
+      log.warn("User does not exist")
       return res.status(404).json("User not found!");
     }
 
@@ -64,7 +80,7 @@ export const login = (req, res) => {
     );
 
     if (!checkPassword){
-      log.Warn("Wrong password or username")
+      log.warn("Wrong password or username")
       return res.status(400).json("Wrong password or username!");
     }
     
@@ -72,7 +88,7 @@ export const login = (req, res) => {
 
     const { password, ...others } = data[0];
 
-    log.Info("User logged in")
+    log.info("User logged in")
 
     res
       .cookie("accessToken", token, {
@@ -84,7 +100,7 @@ export const login = (req, res) => {
 };
 
 export const logout = (req, res) => {
-  log.Info("User logged out")
+  log.info("User logged out")
   res.clearCookie("accessToken",{
     secure:true,
     sameSite:"none"
@@ -96,15 +112,15 @@ export const search = (req, res) => {
 
   db.query(q, [req.body.name], (err, data) => {
     if (err) {
-      log.Error('Error connecting to database')
+      log.error(new Error("Error connecting to database"));
       return res.status(500).json(err);
     }
     if (data.length === 0){
-      log.Warn("Searched user not found")
+      log.warn("Searched user not found")
       return res.status(404).json("User not found!");
     }
 
-    log.Info("Search completed")
+    log.info("Search completed")
     res.status(200).json(data[0]);
   });
 }

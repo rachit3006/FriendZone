@@ -1,9 +1,24 @@
 import { db } from "../connect.js";
 import jwt from "jsonwebtoken";
 import moment from "moment";
-import nodeFileLogger from "node-file-logger";
+import winston from "winston"
 
-const log = nodeFileLogger
+const log = winston.createLogger({
+  // Log only if level is less than (meaning more severe) or equal to this
+  level: "info",
+  // Use timestamp and printf to create a standard log format
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.printf(
+      (info) => `${info.timestamp} ${info.level}: ${info.message}`
+    )
+  ),
+  // Log to the console and a file
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: "logs/app.log" }),
+  ],
+});
 
 export const getPosts = (req, res) => {
   const userId = req.query.userId;
@@ -31,10 +46,10 @@ export const getPosts = (req, res) => {
 
     db.query(q, values, (err, data) => {
       if (err) {
-        log.Error('Error connecting to database')
+        log.error(new Error("Error connecting to database"));
         return res.status(500).json(err);
       }
-      log.Info("Posts fetched")
+      log.info("Posts fetched")
       return res.status(200).json(data);
     });
   });
@@ -64,10 +79,10 @@ export const addPost = (req, res) => {
 
     db.query(q, [values], (err, data) => {
       if (err) {
-        log.Error('Error connecting to database')
+        log.error(new Error("Error connecting to database"));
         return res.status(500).json(err);
       }
-      log.Info("New post created")
+      log.info("New post created")
       return res.status(200).json("Post has been created.");
     });
   });
@@ -90,14 +105,14 @@ export const deletePost = (req, res) => {
 
     db.query(q, [req.params.id, userInfo.id], (err, data) => {
       if (err) {
-        log.Error('Error connecting to database')
+        log.error(new Error("Error connecting to database"));
         return res.status(500).json(err);
       }
       if(data.affectedRows>0){
-        log.Info("Post deleted")
+        log.info("Post deleted")
         return res.status(200).json("Post has been deleted.");
       }
-      log.Warn("Can not delete other user's post")
+      log.warn("Can not delete other user's post")
       return res.status(403).json("You can delete only your post")
     });
   });

@@ -9,9 +9,25 @@ import relationshipRoutes from "./routes/relationships.js";
 import cors from "cors";
 import multer from "multer";
 import cookieParser from "cookie-parser";
-import nodeFileLogger from "node-file-logger";
+import winston from "winston"
 
-const log = nodeFileLogger;
+const log = winston.createLogger({
+  // Log only if level is less than (meaning more severe) or equal to this
+  level: "info",
+  // Use timestamp and printf to create a standard log format
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.printf(
+      (info) => `${info.timestamp} ${info.level}: ${info.message}`
+    )
+  ),
+  // Log to the console and a file
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: "logs/app.log" }),
+  ],
+});
+
 
 //middlewares
 app.use((req, res, next) => {
@@ -50,5 +66,5 @@ app.use("/api/likes", likeRoutes);
 app.use("/api/relationships", relationshipRoutes);
 
 app.listen(process.env.REACT_APP_SERVER_PORT || 8000, () => {
-  log.Info(`Server Running at ${process.env.REACT_APP_SERVER_PORT || 8000}`);
+  log.info(`Server Running at ${process.env.REACT_APP_SERVER_PORT || 8000}`);
 });

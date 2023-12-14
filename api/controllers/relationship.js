@@ -1,18 +1,33 @@
 import { db } from "../connect.js";
 import jwt from "jsonwebtoken";
-import nodeFileLogger from "node-file-logger";
+import winston from "winston"
 
-const log = nodeFileLogger
+const log = winston.createLogger({
+  // Log only if level is less than (meaning more severe) or equal to this
+  level: "info",
+  // Use timestamp and printf to create a standard log format
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.printf(
+      (info) => `${info.timestamp} ${info.level}: ${info.message}`
+    )
+  ),
+  // Log to the console and a file
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: "logs/app.log" }),
+  ],
+});
 
 export const getRelationships = (req,res)=>{
     const q = "SELECT followerUserId FROM relationships WHERE followedUserId = ?";
 
     db.query(q, [req.query.followedUserId], (err, data) => {
       if (err) {
-        log.Error('Error connecting to database')
+        log.error(new Error("Error connecting to database"));
         return res.status(500).json(err);
       }
-      log.Info("Relationships fetched")
+      log.info("Relationships fetched")
       return res.status(200).json(data.map(relationship=>relationship.followerUserId));
     });
 }
@@ -38,10 +53,10 @@ export const addRelationship = (req, res) => {
 
     db.query(q, [values], (err, data) => {
       if (err) {
-        log.Error('Error connecting to database')
+        log.error(new Error("Error connecting to database"));
         return res.status(500).json(err);
       }
-      log.Info("User followed")
+      log.info("User followed")
       return res.status(200).json("Following");
     });
   });
@@ -65,10 +80,10 @@ export const deleteRelationship = (req, res) => {
 
     db.query(q, [userInfo.id, req.query.userId], (err, data) => {
       if (err) {
-        log.Error('Error connecting to database')
+        log.error(new Error("Error connecting to database"));
         return res.status(500).json(err);
       }
-      log.Info("User unfollowed")
+      log.info("User unfollowed")
       return res.status(200).json("Unfollow");
     });
   });

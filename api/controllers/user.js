@@ -1,8 +1,23 @@
 import { db } from "../connect.js";
 import jwt from "jsonwebtoken";
-import nodeFileLogger from "node-file-logger";
+import winston from "winston"
 
-const log = nodeFileLogger
+const log = winston.createLogger({
+  // Log only if level is less than (meaning more severe) or equal to this
+  level: "info",
+  // Use timestamp and printf to create a standard log format
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.printf(
+      (info) => `${info.timestamp} ${info.level}: ${info.message}`
+    )
+  ),
+  // Log to the console and a file
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: "logs/app.log" }),
+  ],
+});
 
 export const getUser = (req, res) => {
   const userId = req.params.userId;
@@ -10,10 +25,10 @@ export const getUser = (req, res) => {
 
   db.query(q, [userId], (err, data) => {
     if (err) {
-      log.Error('Error connecting to database')
+      log.error(new Error("Error connecting to database"));
       return res.status(500).json(err);
     }
-    log.Info("User profile fetched")
+    log.info("User profile fetched")
     const { password, ...info } = data[0];
     return res.json(info);
   });
@@ -47,14 +62,14 @@ export const updateUser = (req, res) => {
       ],
       (err, data) => {
         if (err) {
-          log.Error('Error connecting to database')
+          log.error(new Error("Error connecting to database"));
           return res.status(500).json(err);
         }
         if (data.affectedRows > 0) {
-          log.Info("User profile updated")
+          log.info("User profile updated")
           return res.json("Updated!");
         }
-        log.Warn("Can not update other user's profile")
+        log.warn("Can not update other user's profile")
         return res.status(403).json("You can update only your user!");
       }
     );
