@@ -38,13 +38,13 @@ export const getComments = (req, res) => {
 export const addComment = (req, res) => {
   const token = req.cookies.accessToken;
   if (!token) {
-    log.Error("User not authenticated")
+    log.error(new Error("User not authenticated"))
     return res.status(401).json("Not logged in!");
   }
 
   jwt.verify(token, "secretkey", (err, userInfo) => {
     if (err) {
-      log.Error("Invalid token")
+      log.error(new Error("Invalid token"))
       return res.status(403).json("Token is not valid!");
     }
 
@@ -70,13 +70,13 @@ export const addComment = (req, res) => {
 export const deleteComment = (req, res) => {
   const token = req.cookies.access_token;
   if (!token) {
-    log.Error("User not authenticated")
+    log.error(new Error("User not authenticated"))
     return res.status(401).json("Not logged in!");
   }
 
   jwt.verify(token, "jwtkey", (err, userInfo) => {
     if (err) {
-      log.Error("Invalid token")
+      log.error(new Error("Invalid token"))
       return res.status(403).json("Token is not valid!");
     }
 
